@@ -1,0 +1,36 @@
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu22.04 AS app-build-worker
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    curl \
+    libgl1 \
+    libglib2.0-0 \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update
+
+RUN apt-get install -y \
+    python3.11 \
+    python3.11-distutils \
+    python3.11-dev
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1
+
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python
+
+RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR /backend
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip uninstall -y onnxruntime onnxruntime-gpu
+RUN pip install onnxruntime-gpu
+
+COPY app ./app
+RUN mkdir ./storage
+RUN mkdir ./models
+
+COPY run_worker.py ./run_worker.py
+
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/local/cuda/lib64:$LD_LIBRARY_PATH

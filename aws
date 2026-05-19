@@ -1,0 +1,42 @@
+postgresql database
+postgresql
+username : pji2025
+password : pQvxPDwzjuGg0EZX2DLe
+endpoint : database-pji-2025.cti4mwkgyigw.eu-north-1.rds.amazonaws.com
+
+
+# NEON POSTGRESQL
+NEON_DB=postgresql://neondb_owner:npg_O9gWI4Rmzpjl@ep-lucky-union-ab9vsayn-pooler.eu-west-2.aws.neon.tech:5432/pji_2025_backend?sslmode=require&options=endpoint%3Dep-lucky-union-ab9vsayn
+NEON_HOST="ep-lucky-union-ab9vsayn-pooler.eu-west-2.aws.neon.tech",
+DATABASE_NAME="pji_2025_backend",
+NEON_USER="neondb_owner",
+NEON_PASSWORD="npg_O9gWI4Rmzpjl",
+NEON_SSLMODE="require"
+ alembic revision --autogenerate -m "initial migration"
+psql "postgresql://neondb_owner:npg_O9gWI4Rmzpjl@ep-lucky-union-ab9vsayn-pooler.eu-west-2.aws.neon.tech:5432/pji_2025_backend?sslmode=require&options=endpoint%3Dep-lucky-union-ab9vsayn"
+POSTGRES_SSLMODE="sslmode=require&options=endpoint%3Dep-lucky-union-ab9vsayn-pooler"
+
+
+# BUCKET R2
+R2_ACCESS_KEY_ID=534361d9d943f59c5d896bf97fd09340
+R2_SECRET_ACCESS_KEY=fed6109f249a4a0b217e9c24fb6d1563d7208bd7f3c3bc998fe9f1469db659cc
+TOKEN_VALUE=3Qb9EGjcDbHtiq1Bj2qZ078dWRTzorpxBHr-pTLm
+#https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+#https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+R2_ACCOUNT_ID=75e63ae589c6226bc84f2ca32eb40a7f
+R2_BUCKET_NAME=pji-2025-backend-remove
+R2_PUBLIC_URL=https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+#aws configure set aws_access_key_id "534361d9d943f59c5d896bf97fd09340"
+#aws configure set aws_secret_access_key "fed6109f249a4a0b217e9c24fb6d1563d7208bd7f3c3bc998fe9f1469db659cc"
+#aws s3 ls --endpoint-url https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+#aws s3 cp README.md s3://pji-2025-backend-remove/ --endpoint-url https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+#aws s3 cp s3://pji-2025-backend-remove/README.md . --endpoint-url https://75e63ae589c6226bc84f2ca32eb40a7f.r2.cloudflarestorage.com
+
+
+# Redis & Celery
+REDIS_HOST="steady-seahorse-12355.upstash.io"
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_PASSWORD="ATBDAAIjcDE3ZmJmYTFhOWUzMDg0YzhhOWQzMmRhNDliNzY1MDJjMnAxMA"
+
+

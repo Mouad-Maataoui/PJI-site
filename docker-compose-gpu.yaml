@@ -1,0 +1,75 @@
+services: 
+  db:
+    image: postgres:16-trixie
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - app_network
+
+  api:
+    build:
+      dockerfile: Dockerfile
+    command: python run_dev.py
+    volumes:
+      - models:/backend/models
+      - storage:/backend/storage
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVICE_TYPE=api
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app_network
+
+  worker:
+    build:
+      dockerfile: Dockerfile.worker.gpu
+    command: python3 run_worker.py worker
+    volumes:
+      - models:/backend/models
+      - storage:/backend/storage
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+volumes:
+  postgres_data:
+  models:
+  storage:
+
+networks:
+  app_network:
+    driver: bridge
