@@ -1,0 +1,6 @@
+#!/bin/bash
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    ALTER SCHEMA public OWNER TO "$POSTGRES_USER";
+    GRANT USAGE, CREATE ON SCHEMA public TO "$POSTGRES_USER";
+EOSQL
