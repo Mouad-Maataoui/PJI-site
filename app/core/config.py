@@ -96,6 +96,11 @@ class Settings(BaseSettings):
     MODEL_CACHE_SIZE_GB: int = 5  # Taille max du cache en GB
     AUTO_DOWNLOAD_MODELS: bool = True  # Télécharger automatiquement les modèles manquants
 
+    # HuggingFace — Détection deepfake
+    HF_API_TOKEN: str = ""
+    HF_DEEPFAKE_MODEL: str = "dima806/deepfake_vs_real_image_detection"
+    HF_AI_DETECT_MODEL: str = "dima806/ai_vs_human_generated_image_detection"
+    HF_TIMEOUT: int = 30  # secondes max par appel
 
     model_config = {
         "case_sensitive": True,

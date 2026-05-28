@@ -5,6 +5,7 @@ Routes pour le monitoring et les métriques Prometheus
 
 from fastapi import APIRouter, Response, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta, timezone
 
@@ -30,7 +31,7 @@ async def health_check(db: Session = Depends(get_db)):
     """
     try:
         # Test de connexion à la base de données
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         
         # Test Redis (optionnel)
         try:

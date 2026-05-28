@@ -130,7 +130,7 @@ class ModelManager:
         """Retourne la liste des modèles déjà téléchargés"""
         downloaded = []
         for models_type, models in self.available_models.items():
-            for models_name, config in models:
+            for models_name, config in models.items():
                 model_path = self.dirs[models_type] / config["filename"]
                 if model_path.exists():
                     file_size = model_path.stat().st_size / (1024 * 1024)  # MB
